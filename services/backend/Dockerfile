@@ -3,7 +3,7 @@ FROM node:16 as build
 WORKDIR /app
 
 COPY package.json package-lock.json* lerna.json ./
-COPY packages/openapi/ packages/
+COPY packages/openapi/* packages/openapi/
 COPY services/backend/package.json services/backend/package-lock.json* services/backend/
 RUN npm install lerna --global
 RUN lerna bootstrap
