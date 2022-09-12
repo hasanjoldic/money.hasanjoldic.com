@@ -1,4 +1,4 @@
 {
   "files": [],
-  "references": [{ "path": "./db" }, { "path": "./openapi" }]
+  "references": [{ "path": "./db" }]
 }

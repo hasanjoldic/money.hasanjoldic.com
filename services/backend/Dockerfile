@@ -3,11 +3,10 @@ FROM node:16 as build
 WORKDIR /app
 
 COPY package.json package-lock.json* lerna.json ./
-COPY packages/openapi/* packages/openapi/
+COPY packages/openapi/ packages/
 COPY services/backend/package.json services/backend/package-lock.json* services/backend/
 RUN npm install lerna --global
 RUN lerna bootstrap
-RUN lerna run build --scope=@money.hasanjoldic.com/openapi
 RUN lerna link
 
 COPY . .

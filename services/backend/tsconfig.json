@@ -1,10 +1,6 @@
 {
   "extends": "../../tsconfig.base.json",
 
-  "references": [
-    { "path": "../../packages/db" },
-    { "path": "../../packages/openapi" }
-  ],
   "compilerOptions": {
     "outDir": "dist",
     "rootDir": "src"
