@@ -7,9 +7,10 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "clean": "rm -rf node_modules tsconfig.tsbuildinfo dist",
-    "copy": "cp -R src/migrate/migrations dist/migrate/",
-    "build": "npm run clean && tsc -b",
-    "build:watch": "npm run build -- --watch"
+    "copy": "mkdir -p dist/migrate && cp -R src/migrate/migrations dist/migrate/",
+    "build": "npm run clean && npm run copy && tsc -b",
+    "build:watch": "npm run build -- --watch",
+    "migrate": "node dist/migrate/index.js"
   },
   "author": "Hasan Joldic",
   "license": "ISC",
