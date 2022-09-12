@@ -10,7 +10,11 @@
     "openapi": "openapi --input http://localhost:3000/api/v1.yaml --output ./src/openapi"
   },
   "dependencies": {
-    "@hasan.joldic/theme": "^0.0.35",
+    "@emotion/react": "^11.10.4",
+    "@emotion/styled": "^11.10.4",
+    "@hasan.joldic/theme": "^0.2.0",
+    "@mui/icons-material": "^5.10.3",
+    "@mui/material": "^5.10.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-dropzone": "^14.2.2",

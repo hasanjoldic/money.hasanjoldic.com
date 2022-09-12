@@ -4,7 +4,8 @@ WORKDIR /app
 
 COPY package.json package-lock.json* ./
 COPY services/frontend/package.json services/frontend/package-lock.json* services/frontend/
-RUN npm ci
+RUN npm install lerna --global
+RUN lerna bootstrap && lerna link
 
 COPY . .
 

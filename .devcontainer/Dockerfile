@@ -14,4 +14,5 @@ RUN bash /tmp/nodesource_setup.sh
 RUN apt install nodejs -y
 # install lerna globally so we don't have to install it by running `npm install`
 # this way we can use only lerna to install all the dependencies
+RUN npm install --global yarn
 RUN npm install --global lerna@^5.5.0
