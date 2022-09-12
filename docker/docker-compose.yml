@@ -27,7 +27,7 @@ services:
     networks:
       - proxy.money.hasanjoldic.com
     ports:
-      - 3001:80
+      - 3030:80
     volumes:
       - ../nginx/templates:/etc/nginx/templates
     env_file:
