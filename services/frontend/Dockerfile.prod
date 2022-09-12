@@ -1,0 +1,20 @@
+FROM node:16 AS builder
+
+WORKDIR /app
+
+COPY package.json package-lock.json* ./
+COPY services/frontend/package.json services/frontend/package-lock.json* services/frontend/
+RUN npm ci
+
+COPY . .
+
+RUN npm -w @money.hasanjoldic.com/frontend run build
+
+FROM nginx:alpine AS runner
+
+WORKDIR /usr/share/nginx/html
+RUN rm -rf ./*
+
+COPY --from=builder /app/services/frontend/dist/* .
+
+CMD ["nginx", "-g", "daemon off;"]

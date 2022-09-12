@@ -1,0 +1,37 @@
+version: "3.7"
+
+services:
+  backend:
+    build:
+      context: ..
+      dockerfile: ./services/backend/Dockerfile
+    image: backend.money.hasanjoldic.com
+    restart: always
+    networks:
+      - proxy.money.hasanjoldic.com
+    env_file:
+      - ../.env
+
+  frontend:
+    image: frontend.money.hasanjoldic.com
+    restart: always
+    networks:
+      - proxy.money.hasanjoldic.com
+    command: nginx -g 'daemon off;'
+    env_file:
+      - ../.env
+
+  proxy:
+    image: nginx
+    restart: always
+    networks:
+      - proxy.money.hasanjoldic.com
+    ports:
+      - 3001:80
+    volumes:
+      - ../nginx/templates:/etc/nginx/templates
+    env_file:
+      - ../.env
+
+networks:
+  proxy.money.hasanjoldic.com:

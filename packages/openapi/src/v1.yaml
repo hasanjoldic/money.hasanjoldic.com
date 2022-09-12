@@ -1,0 +1,147 @@
+openapi: 3.0.3
+
+info:
+  title: money.hasanjoldic.com API
+  description: | 
+    Management of personal finances
+    Create and read receipts
+
+    // TODO expand
+  version: 0.1.0
+  contact:
+    name: Hasan Joldic
+    url: hasanjoldic.com
+    email: office@hasanjoldic.com
+
+servers:
+  - url: https://money.hasanjoldic.com/api
+
+paths:
+  /receipts/{id}:
+    get:
+      operationId: getReceiptById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Receipt"
+
+    patch:
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/ReceiptPatch"
+
+      responses:
+        201:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Receipt"
+
+    delete:
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Receipt"
+  /receipts:
+    get:
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Receipt"
+    post:
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/ReceiptPost"
+
+      responses:
+        201:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Receipt"
+components:
+  schemas:
+    ReceiptPost:
+      type: object
+      properties:
+        total:
+          type: number
+          minimum: 0
+          multipleOf: 0.01
+        receivedAt:
+          description: Date when we received the receipt
+          type: string
+          format: date
+        scanFile:
+          type: string
+          format: binary
+          writeOnly: true
+      required:
+        - total
+        - scanFile
+    ReceiptPatch:
+      allOf:
+        - $ref: "#/components/schemas/ReceiptPost"
+        - type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+      required:
+        - id
+      minProperties: 2
+    Receipt:
+      allOf:
+        - $ref: "#/components/schemas/ReceiptPatch"
+        - type: object
+          properties:
+            scanUrl:
+              type: string
+              format: uri
+              readOnly: true
+      required:
+        - id
+        - total
+        - receivedAt
+        - scanUrl

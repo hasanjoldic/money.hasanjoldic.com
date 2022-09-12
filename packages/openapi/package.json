@@ -1,0 +1,20 @@
+{
+  "name": "@money.hasanjoldic.com/openapi",
+  "version": "0.1.0",
+  "description": "",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "author": "Hasan Joldic <hasan.joldic@enki.ba> (https://enki.ba/)",
+  "scripts": {
+    "clean": "rm -rf dist",
+    "copy": "cp src/*.yaml dist/",
+    "build": "npm run clean && mkdir -p dist && npm run copy && tsc",
+    "build:watch": "npm run build -- --watch"
+  },
+  "dependencies": {
+    "yamljs": "^0.3.0"
+  },
+  "devDependencies": {
+    "@types/yamljs": "^0.2.31"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "name": "@money.hasanjoldic.com/frontend",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "openapi": "openapi --input http://localhost:3000/api/v1.yaml --output ./src/openapi"
+  },
+  "dependencies": {
+    "@hasan.joldic/theme": "^0.0.35",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-dropzone": "^14.2.2",
+    "react-hook-form": "^7.35.0",
+    "react-router-dom": "^6.3.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.17",
+    "@types/react-dom": "^18.0.6",
+    "@vitejs/plugin-react": "^2.1.0",
+    "openapi-typescript-codegen": "^0.23.0",
+    "typescript": "^4.6.4",
+    "vite": "^3.1.0"
+  }
+}

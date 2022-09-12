@@ -1,0 +1,365 @@
+openapi: 3.0.3
+
+info:
+  title: money.hasanjoldic.com API
+  description: |
+    Management of personal finances
+    Create and read receipts 
+
+
+    // TODO expand
+  version: 0.1.0
+  contact:
+    name: Hasan Joldic
+    url: hasanjoldic.com
+    email: office@hasanjoldic.com
+    
+servers:
+  - url: https://money.hasanjoldic.com
+  
+paths:
+  /receiptItemTags{id}:
+    get:
+      parameters:
+        - name: id
+          in: path 
+          required: true 
+          schema:
+            type: string
+            format: uuid
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReceiptItemTag"
+    delete:
+      parameters:
+        - name: id
+          in: path 
+          required: true 
+          schema:
+            type: string
+            format: uuid
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReceiptItemTag"
+  /receiptItemTags:
+    get:
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/ReceiptItemTag"
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReceiptItemTag"
+      responses:
+        "201":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReceiptItemTag"
+    patch:
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/ReceiptItemTagPatch"
+
+      responses:
+        "201":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReceiptItemTag"
+  /receiptItems{id}:
+    get:
+      parameters:
+        - name: id
+          in: path 
+          required: true 
+          schema:
+            type: string
+            format: uuid
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReceiptItem"
+    delete:
+      parameters:
+        - name: id
+          in: path 
+          required: true 
+          schema:
+            type: string
+            format: uuid
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReceiptItem"
+  /receiptItems:
+    get:
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/ReceiptItem"
+    post:
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/ReceiptItem"
+      responses:
+        "201":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReceiptItem"
+    patch:
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/ReceiptItemPatch"
+
+      responses:
+        "201":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Receipt"
+  /receipts{id}:
+    get:
+      parameters:
+        - name: id
+          in: path 
+          required: true 
+          schema:
+            type: string
+            format: uuid
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Receipt"
+    delete:
+      parameters:
+        - name: id
+          in: path 
+          required: true 
+          schema:
+            type: string
+            format: uuid
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Receipt"
+  /receipts:
+    get:
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Receipt"
+    post:
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/Receipt"
+      responses:
+        "201":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Receipt"
+    patch:
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/ReceiptPatch"
+
+      responses:
+        "201":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Receipt"
+components:
+  schemas:
+    ReceiptItemTagPatch:
+      description: |
+        Defining parent tags allows us to define receipt items by a small number of specific tags
+        and at the same time to know which general idea they fall under
+        For example, we can say that we bought something that is "Veterinery services", and then
+        have the parent tag of "Veterinery services" be "Pets".
+
+        Those that don't have a parent tag will be considered root tags.
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        title:
+          type: string
+          example: Beer
+        parentTag:
+          $ref: "#/components/schemas/ReceiptItemTag"
+      required:
+        - id
+      minProperties: 2
+    ReceiptItemTag:
+      type: object
+      allOf:
+        - $ref: "#/components/schemas/ReceiptItemTagPatch"
+        - type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+              readOnly: true
+      required:
+        - id
+        - total
+        - parentTag
+    ReceiptItemPatch:
+      description: |
+        A receipt item can be each line in a receipt or it can be the sum of all lines
+        with the same tags.
+        For example, we can have "oil" and "bread" separatelly or we can sum up their
+        totals and save them as one receipt item since they both have the same tag
+        (which, in this case, would be "Food")
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        total:
+          type: number
+          minimum: 0
+          multipleOf: 0.01
+        tags:
+          type: array
+          items:
+            $ref: "#/components/schemas/ReceiptItemTag"
+          minItems: 1
+          uniqueItems: true
+      required:
+        - id
+      minProperties: 2
+    ReceiptItem:
+      type: object
+      allOf:
+        - $ref: "#/components/schemas/ReceiptItemPatch"
+        - type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+              readOnly: true
+      required:
+        - id
+        - total
+        - tags
+    ReceiptPatch:
+      properties:
+        id:
+          type: string
+          format: uuid
+        total:
+          description: |
+            Even though the total can be automatically calculated as the sum of the totals of the
+            receipt items, we will enter it manually in case we are too lazy and don't feel like
+            entering all items for a specific receipt
+          type: number
+          minimum: 0
+          multipleOf: 0.01
+        date:
+          description: Date when the transaction took place
+          type: string
+          format: date
+        scanFile:
+          type: string
+          format: binary
+          writeOnly: true
+        scanUrl:
+          type: string
+          format: uri
+          readOnly: true
+        receptItems:
+          type: array
+          items:
+            $ref: "#/components/schemas/ReceiptItem"
+          minItems: 1
+          uniqueItems: true
+      required:
+        - id
+      minProperties: 2
+    Receipt:
+      type: object
+      allOf:
+        - $ref: "#/components/schemas/ReceiptPatch"
+        - type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+              readOnly: true
+      required:
+        - id
+        - total
+        - date
+        - scanFile
+        - scanUrl
+        - receptItems
