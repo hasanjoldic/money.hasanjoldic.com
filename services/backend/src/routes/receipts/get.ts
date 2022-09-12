@@ -2,6 +2,7 @@ import express, { Router } from "express";
 import { StatusCodes } from "http-status-codes";
 
 import { pool } from "../../db";
+import { sanitize } from "./utils";
 
 const router = Router();
 
@@ -11,16 +12,9 @@ const handler = async (req: express.Request, res: express.Response) => {
     FROM receipts;
   `);
 
-  const rows = getReceiptsQuery.rows.map((row) => ({
-    id: row.id,
-    total: row.total,
-    receivedAt: row.received_at,
-    scanUrl: row.scan_url,
-  }));
+  const rows = getReceiptsQuery.rows.map(sanitize);
 
-  if (getReceiptsQuery.rowCount) {
-    res.status(StatusCodes.OK).send({ data: rows });
-  }
+  res.status(StatusCodes.OK).send({ data: rows });
 };
 
 router.get("/receipts", handler);

@@ -8,6 +8,7 @@ import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
 
 import { isValidRequest, sendBadRequestResponse } from "../../utils";
 import { pool } from "../../db";
+import { sanitize } from "./utils";
 
 const upload = multer({ dest: "../../../temp" });
 
@@ -85,7 +86,9 @@ export const postReceipts = async (
       ]
     );
 
-    res.status(StatusCodes.OK).send();
+    const receipt = sanitize(queryResult.rows[0]);
+
+    res.status(StatusCodes.OK).send(receipt);
   } catch (error) {
     console.error(error);
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).send();
