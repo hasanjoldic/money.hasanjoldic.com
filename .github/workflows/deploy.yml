@@ -13,7 +13,7 @@ jobs:
         with:
           command: | 
             cd /root/apps/money.hasanjoldic.com && git pull
-            cd /root/apps/money.hasanjoldic.com && docker-compose up --build --detach
+            cd /root/apps/money.hasanjoldic.com && docker-compose -f docker/docker-compose.yml -f docker/docker-compose.prod.yml --build --detach
           host: money.hasanjoldic.com
           username: root
           privateKey: ${{ secrets.HASAN_JOLDIC_COM_PRIVATE_KEY }}
