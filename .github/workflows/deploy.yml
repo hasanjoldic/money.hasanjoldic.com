@@ -1,4 +1,4 @@
-name: deploy notes.enki.ba
+name: deploy money.enki.ba
 
 on:
   push:
@@ -12,7 +12,8 @@ jobs:
       - uses: garygrossgarten/github-action-ssh@release
         with:
           command: | 
-            cd /root/apps/money.hasanjoldic.com && git pull
+            if cd /root/apps/money.hasanjoldic.com; then git pull; 
+            else git clone git@github.com:hasanjoldic/money.hasanjoldic.com.git /root/apps/money.hasanjoldic.com; fi
             cd /root/apps/money.hasanjoldic.com && docker-compose -f docker/docker-compose.yml -f docker/docker-compose.prod.yml up --build --detach
           host: money.hasanjoldic.com
           username: root
