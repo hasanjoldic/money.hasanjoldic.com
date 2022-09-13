@@ -1,0 +1,19 @@
+name: deploy notes.enki.ba
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: garygrossgarten/github-action-ssh@release
+        with:
+          command: | 
+            cd /root/apps/money.hasanjoldic.com && git pull
+            cd /root/apps/money.hasanjoldic.com && docker-compose up --build --detach
+          host: money.hasanjoldic.com
+          username: root
+          privateKey: ${{ secrets.HASAN_JOLDIC_COM_PRIVATE_KEY }}
